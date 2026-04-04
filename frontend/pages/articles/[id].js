@@ -8,18 +8,21 @@ export default function ArticleDetail() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     if (!id) return;
 
     const fetchArticle = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/articles/${id}`);
+        const res = await fetch(`${API_URL}/api/articles/${id}`);
         const data = await res.json();
 
         setArticle(data);
         setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     };
 
@@ -62,7 +65,11 @@ export default function ArticleDetail() {
       {/* 📄 ARTICLE CARD */}
       <div
         className="p-8 rounded-xl shadow max-w-3xl mx-auto"
-        style={{ background: "#C8AAAA", fontFamily: "monospace serif", fontSize:"18px" }}
+        style={{
+          background: "#C8AAAA",
+          fontFamily: "monospace serif",
+          fontSize: "18px",
+        }}
       >
         <h1 className="text-3xl font-bold mb-4" style={{ color: "#574964" }}>
           {article.title}

@@ -15,12 +15,15 @@ export default function EditArticle() {
 
   const [loading, setLoading] = useState(true);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  // 🔥 FETCH ARTICLE
   useEffect(() => {
     if (!id) return;
 
     const fetchArticle = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/articles/${id}`);
+        const res = await fetch(`${API_URL}/api/articles/${id}`);
         const data = await res.json();
 
         setForm({
@@ -33,12 +36,14 @@ export default function EditArticle() {
         setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     };
 
     fetchArticle();
   }, [id]);
 
+  // 🔥 UPDATE ARTICLE
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -51,7 +56,7 @@ export default function EditArticle() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5001/api/articles/${id}`, {
+      const res = await fetch(`${API_URL}/api/articles/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -73,9 +78,11 @@ export default function EditArticle() {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong ❌");
     }
   };
 
+  // 🔥 LOADING STATE
   if (loading) {
     return (
       <div
@@ -107,12 +114,14 @@ export default function EditArticle() {
           <input
             value={form.title}
             className="w-full p-3 rounded border"
+            placeholder="Title"
             onChange={(e) => setForm({ ...form, title: e.target.value })}
           />
 
           <input
             value={form.description}
             className="w-full p-3 rounded border"
+            placeholder="Description"
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
 
@@ -120,12 +129,14 @@ export default function EditArticle() {
             value={form.content}
             rows="5"
             className="w-full p-3 rounded border"
+            placeholder="Content"
             onChange={(e) => setForm({ ...form, content: e.target.value })}
           />
 
           <input
             value={form.tags}
             className="w-full p-3 rounded border"
+            placeholder="Tags (comma separated)"
             onChange={(e) => setForm({ ...form, tags: e.target.value })}
           />
 

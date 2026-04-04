@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { getArticles } from "../services/api";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
 export default function Dashboard() {
   const [articles, setArticles] = useState([]);
@@ -58,30 +60,30 @@ export default function Dashboard() {
     router.push("/login");
   };
 
-  const handleDelete = async (id, createdBy) => {
-    if (!user?._id || createdBy !== user._id) {
-      toast.error("Unauthorized ❌");
-      return;
-    }
+const handleDelete = async (id, createdBy) => {
+  if (!user?._id || createdBy !== user._id) {
+    toast.error("Unauthorized ❌");
+    return;
+  }
 
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    try {
-      await fetch(`http://localhost:5001/api/articles/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  try {
+    await fetch(`${API_URL}/api/articles/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      toast.success("Deleted ✅");
+    toast.success("Deleted ✅");
 
-      const data = await getArticles(page);
-      setArticles(data?.articles || data || []);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const data = await getArticles(page);
+    setArticles(data?.articles || data || []);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const filtered = articles.filter(
     (a) =>
