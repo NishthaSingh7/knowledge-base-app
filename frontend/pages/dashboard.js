@@ -13,25 +13,21 @@ export default function Dashboard() {
 
   const router = useRouter();
 
-  // 🔥 INIT (SAFE)
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
 
-    // 🔥 Redirect only once safely
     if (!token) {
-      router.replace("/login"); // ✅ use replace instead of push
+      router.replace("/login");  
       return;
     }
 
-    // 🔥 Set user safely
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
 
-        // ✅ SIMPLE (no over logic)
         setTimeout(() => {
           setUser(parsedUser?.user || parsedUser);
         }, 0);
@@ -39,9 +35,8 @@ export default function Dashboard() {
         console.error("User parse error:", err);
       }
     }
-  }, []); // ✅ IMPORTANT - empty dependency array to run once
+  }, []); 
 
-  // 🔥 FETCH ARTICLES
   useEffect(() => {
     const load = async () => {
       try {
@@ -57,14 +52,12 @@ export default function Dashboard() {
     load();
   }, [page]);
 
-  // 🔥 LOGOUT
   const handleLogout = () => {
     localStorage.clear();
     toast.success("Logged out 👋");
     router.push("/login");
   };
 
-  // 🔥 DELETE
   const handleDelete = async (id, createdBy) => {
     if (!user?._id || createdBy !== user._id) {
       toast.error("Unauthorized ❌");
@@ -90,7 +83,6 @@ export default function Dashboard() {
     }
   };
 
-  // 🔍 SEARCH
   const filtered = articles.filter(
     (a) =>
       a?.title?.toLowerCase().includes(search.toLowerCase()) ||
