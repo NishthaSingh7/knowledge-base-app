@@ -85,11 +85,15 @@ const handleDelete = async (id, createdBy) => {
   }
 };
 
-  const filtered = articles.filter(
-    (a) =>
-      a?.title?.toLowerCase().includes(search.toLowerCase()) ||
-      a?.description?.toLowerCase().includes(search.toLowerCase()),
-  );
+ const filtered = articles.filter((a) => {
+   const query = search.toLowerCase().replace("#", "");
+
+   return (
+     a?.title?.toLowerCase().includes(query) ||
+     a?.description?.toLowerCase().includes(query) ||
+     a?.tags?.some((tag) => tag.toLowerCase().includes(query))
+   );
+ });
 
   return (
     <div className="min-h-screen" style={{ background: "#FFDAB3" }}>
