@@ -2,7 +2,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // LOGIN
 export const loginUser = async (data) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
+  const res = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -15,7 +15,7 @@ export const loginUser = async (data) => {
 
 // SIGNUP
 export const signupUser = async (data) => {
-  const res = await fetch(`${API_URL}/auth/signup`, {
+  const res = await fetch(`${API_URL}/api/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,13 +28,13 @@ export const signupUser = async (data) => {
 
 // GET ARTICLES
 export const getArticles = async (page = 1) => {
-  const res = await fetch(`http://localhost:5001/api/articles?page=${page}`);
+  const res = await fetch(`${API_URL}/api/articles?page=${page}`);
   return res.json();
 };
 
 // CREATE ARTICLE
 export const createArticle = async (data, token) => {
-  const res = await fetch(`${API_URL}/articles`, {
+  const res = await fetch(`${API_URL}/api/articles`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
